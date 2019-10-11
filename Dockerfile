@@ -2,20 +2,17 @@ FROM alpine:3.9
 
 MAINTAINER Xavier Garnier "xavier.garnier@irisa.fr"
 
-ENV CORESE_URL=https://codeload.github.com/Wimmics/corese/tar.gz/
-ENV CORESE_VERSION=4.1.1-rc1
-ENV CORESE=${CORESE_URL}v${CORESE_VERSION}
-
-WORKDIR /
+ENV CORESE_GIT_URL=https://github.com/Wimmics/corese.git
+ENV CORESE_VERSION=master
 
 RUN apk --no-cache add --update openjdk11 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community && \
-    apk add --no-cache maven curl && \
-    curl $CORESE > $CORESE_VERSION.tgz && \
-    tar -xvf $CORESE_VERSION.tgz && \
-    rm -rf $CORESE_VERSION.tgz && \
-    cd /corese-$CORESE_VERSION && \
+    apk add --no-cache maven git && \
+    git clone -b ${CORESE_VERSION} --single-branch --depth=1 ${CORESE_GIT_URL} /corese && \
+    cd /corese && \
     mvn -Dmaven.test.skip=true package
 
-WORKDIR /corese-$CORESE_VERSION
+COPY start.sh /start.sh
+
+WORKDIR /corese
 EXPOSE 8080
-CMD ["java", "-jar","corese-server/target/corese-server-4.1.1-jar-with-dependencies.jar"]
+CMD ["/start.sh"]
