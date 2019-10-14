@@ -3,8 +3,8 @@ FROM alpine:3.9
 MAINTAINER Xavier Garnier "xavier.garnier@irisa.fr"
 
 ENV CORESE_GIT_URL=https://github.com/Wimmics/corese.git
-ENV CORESE_GIT_VERSION=v4.1.0-rc2
-ENV CORESE_JAR=corese-server-4.1.0-jar-with-dependencies.jar
+ENV CORESE_GIT_VERSION=v4.1.1-rc1
+ENV CORESE_JAR=corese-server-4.1.1-jar-with-dependencies.jar
 
 RUN apk --no-cache add --update openjdk11 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community && \
     apk add --no-cache maven git && \
