@@ -8,6 +8,6 @@ if [ -d /load ]; then
     done
 fi
 
-CMD="java -jar /corese/${CORESE_JAR} ${OPTS}"
+CMD="java -jar /corese/corese-server.jar ${OPTS}"
 
 $CMD

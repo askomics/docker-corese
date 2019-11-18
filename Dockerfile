@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:3.9 AS builder
 
 MAINTAINER Xavier Garnier "xavier.garnier@irisa.fr"
 
@@ -11,12 +11,15 @@ RUN apk --no-cache add --update openjdk11 --repository=http://dl-cdn.alpinelinux
     git clone -b ${CORESE_GIT_VERSION} --single-branch --depth=1 ${CORESE_GIT_URL} /corese_source && \
     cd /corese_source && \
     mvn -Dmaven.test.skip=true package && \
-    mkdir /corese && mv /corese_source/corese-server/target/${CORESE_JAR} /corese/${CORESE_JAR} && \
-    rm -rf /corese_source && \
-    apk del maven
+    mv /corese_source/corese-server/target/${CORESE_JAR} /corese_source/corese-server/target/corese-server.jar
 
-COPY start.sh /start.sh
+FROM alpine:3.9
+RUN apk --no-cache add --update openjdk11 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community && \
+    mkdir /corese
+
+COPY --from=builder /corese_source/corese-server/target/corese-server.jar /corese
+COPY start.sh /corese/start.sh
 
 WORKDIR /corese
 EXPOSE 8080
-CMD ["/start.sh"]
+CMD sh /corese/start.sh
