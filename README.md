@@ -5,10 +5,18 @@
 ## Pull from dockerHub
 
 ```bash
-docker pull xgaia/corese
+docker pull xgaia/corese:latest
 ```
 
-## Or build
+### Versionning
+
+As there hasn't been an official release since [January 2019](https://github.com/Wimmics/corese/releases), I regularly publish [release](https://github.com/xgaia/docker-corese/releases) according to the commit date.
+
+```bash
+docker pull xgaia/corese:20.6.8
+```
+
+## Build
 
 ```bash
 # Clone the repo
@@ -20,7 +28,7 @@ docker build -t corese .
 ## Run
 
 ```bash
-docker run --name corese -p 8080:8080 -d xgaia/corese
+docker run --name corese -p 8080:8080 -e MEM=1G -d xgaia/corese
 ```
 
 ## Run and load data
